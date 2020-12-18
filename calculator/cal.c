@@ -113,7 +113,6 @@ Node* to_node_array(char* str, int* item_count)
     int str_length = strlen(str);    
     char* buff = (char*)calloc(MAX_ITEM_LENGTH, sizeof(char));
     Node* node_array = (Node*)malloc(sizeof(Node) * MAX_EXPRESSION_ELEMENT_COUNT);
-    Node* temp_p = NULL;
 
     
     for(int i = 0; i < str_length; i++)
@@ -142,7 +141,6 @@ Node* to_node_array(char* str, int* item_count)
                     // new_node.mode = oper_sign;
                     // new_node.data.oper = str[i];
                     add_node_to_node_array(node_array, count_item, new_node(oper_sign, str[i], 0, 0));
-                    free(temp_p);
                     count_item++;
                 }
                 break;
