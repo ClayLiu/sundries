@@ -195,7 +195,7 @@ Node* to_inverse_polish_node_array(Node* node_array, int array_size, int* return
         }
     }
 
-    if(top)
+    while(top)
         inv_pol_array[j++] = help_stack[--top];
 
     *return_size = j;
