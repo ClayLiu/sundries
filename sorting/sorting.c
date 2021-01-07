@@ -1,14 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
-#define print_i_j(x) printf("%d i = %d, j = %d\n", x, i, j);
-#define debug print_array(array, array_size); system("pause");
+#include "sorting.h"
 
-void print_array(int* array, int array_size)
-{
-    for(int i = 0; i < array_size; i++)
-        printf(", %d" + ((!i) << 1), array[i]);
-    putchar('\n');
-}
+#define print_i_j(x) printf("%d i = %d, j = %d\n", x, i, j);
+#define debug(x) printf("%d :", x); print_array(array, array_size); system("pause");
 
 int swap(int* a, int* b)
 {
@@ -130,9 +125,38 @@ void merge_sort(int* array, int array_size)
     merge_sort_in(array, temp, array_size);
 }
 
+static void heap_adjust(int* heap, int index, int heap_size)
+{
+    // Max heap sorting.
+    
+    int i;
+    int save = heap[index];
+    for(i = (index << 1) + 1; i < heap_size; i <<= 1)
+    {
+        i += ((i + 1) < heap_size) && (heap[i] < heap[i + 1]);    // Find the bigger way to go through.
+
+        if(save >= heap[i]) // If put that here can keep heap,
+            break;          // then break the loop.
+
+        heap[index] = heap[i];
+        index = i;
+    }
+
+    heap[index] = save;
+}
+
 void heap_sort(int* array, int array_size)
 {
-
+    // Max heap sorting.
+    int i;
+    for(i = (array_size >> 1) - 1; i >= 0; i--) // Build the heap.
+        heap_adjust(array, i, array_size);
+    
+    for(i = array_size - 1; i > 0; i--)
+    {
+        swap(array, array + i);
+        heap_adjust(array, 0, i);
+    }
 }
 
 void shell_sort(int* array, int array_size)
@@ -176,14 +200,4 @@ void quick_sort(int* array, int array_size)
     int pivot = quick_sort_partion(array, array_size);
     quick_sort(array, pivot);
     quick_sort(array + pivot + 1, array_size - pivot - 1);
-}
-
-int main()
-{
-    int test[] = {13, 42, 20, 28, 33, 12, 32, 50};
-    print_array(test, 8);
-    directly_insert_sort(test, 8);
-    print_array(test, 8);
-    printf("done\n");
-    return 0;
 }
